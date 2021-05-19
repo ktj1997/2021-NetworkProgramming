@@ -1,9 +1,10 @@
 package com.ssu.network.chat.core.util;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 public class SecurityUtil {
 
     public static Long getUserIdFromToken() {
-        return 1L;
-        //return Long.parseLong(SecurityContextHolder~~)
+        return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

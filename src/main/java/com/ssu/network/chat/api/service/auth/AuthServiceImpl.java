@@ -7,9 +7,10 @@ import com.ssu.network.chat.api.dao.user.UserRepository;
 import com.ssu.network.chat.api.model.user.User;
 import com.ssu.network.chat.api.service.auth.exception.InvalidSignInException;
 import com.ssu.network.chat.api.service.user.exception.UserNotExistException;
+import com.ssu.network.chat.core.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.InvalidTimeoutException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -18,11 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
 
     @Override
     public boolean signUp(SignUpRequestDto dto) {
         User user = dto.toEntity();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
@@ -31,9 +35,13 @@ public class AuthServiceImpl implements AuthService {
     public SignInResponseDto signIn(SignInRequestDto dto) {
         User user = userRepository.findByUserName(dto.getUserName()).orElseThrow(UserNotExistException::new);
 
-        if (!user.getPassword().equals(dto.getPassword()))
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword()))
             throw new InvalidSignInException();
-        return new SignInResponseDto("", "");
+
+        String accessToken = jwtProvider.generateAccessToken(user.getId(), user.getUserRole());
+        String refreshToken = jwtProvider.generateRefreshToken(user.getId(), user.getUserRole());
+        user.setRefreshToken(refreshToken);
+        return new SignInResponseDto(accessToken, refreshToken);
     }
 
 }

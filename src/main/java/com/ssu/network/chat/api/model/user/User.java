@@ -1,10 +1,7 @@
 package com.ssu.network.chat.api.model.user;
 
 import com.ssu.network.chat.api.model.common.TimeEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,6 +19,7 @@ public class User extends TimeEntity {
     @Column(unique = true, length = 20, nullable = false)
     private String userName;
 
+    @Setter
     @Column(nullable = false)
     private String password;
 
@@ -38,5 +36,10 @@ public class User extends TimeEntity {
     @Column(nullable = false, length = 10)
     private String birth;
 
+    @Column(length = 20)
+    @Enumerated(EnumType.STRING)
+    UserRole userRole;
+
+    @Setter
     private String refreshToken;
 }

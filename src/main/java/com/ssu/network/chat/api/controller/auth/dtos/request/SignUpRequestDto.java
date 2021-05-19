@@ -2,6 +2,7 @@ package com.ssu.network.chat.api.controller.auth.dtos.request;
 
 import com.ssu.network.chat.api.model.user.Gender;
 import com.ssu.network.chat.api.model.user.User;
+import com.ssu.network.chat.api.model.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,12 +23,12 @@ public class SignUpRequestDto {
     private String name;
 
     @NotEmpty
-    private Gender gender;
+    private String gender;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String birth;
 
     public User toEntity() {
-        return new User(null, userName, password, name, gender, birth, null);
+        return new User(null, userName, password, name, Gender.valueOf(gender), birth, UserRole.ROLE_USER, null);
     }
 }
