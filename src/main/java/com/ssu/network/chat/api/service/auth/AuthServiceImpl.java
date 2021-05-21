@@ -44,4 +44,9 @@ public class AuthServiceImpl implements AuthService {
         return new SignInResponseDto(accessToken, refreshToken);
     }
 
+    @Override
+    public boolean checkIdDuplication(String id) {
+        return !userRepository.existsByUserName(id);
+    }
+
 }

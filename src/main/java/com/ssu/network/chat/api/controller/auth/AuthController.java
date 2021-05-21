@@ -6,10 +6,7 @@ import com.ssu.network.chat.api.controller.auth.dtos.request.SignUpRequestDto;
 import com.ssu.network.chat.api.controller.auth.dtos.response.SignInResponseDto;
 import com.ssu.network.chat.api.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,5 +25,10 @@ public class AuthController {
     @PostMapping("/signin")
     public SignInResponseDto signIn(@RequestBody @Valid SignInRequestDto dto) {
         return authService.signIn(dto);
+    }
+
+    @GetMapping("/check")
+    public boolean checkIdDuplication(@RequestParam String id) {
+        return authService.checkIdDuplication(id);
     }
 }

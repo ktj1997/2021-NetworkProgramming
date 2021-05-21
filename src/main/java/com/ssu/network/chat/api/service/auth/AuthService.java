@@ -8,4 +8,6 @@ public interface AuthService {
     boolean signUp(SignUpRequestDto dto);
 
     SignInResponseDto signIn(SignInRequestDto dto);
+
+    boolean checkIdDuplication(String id);
 }
