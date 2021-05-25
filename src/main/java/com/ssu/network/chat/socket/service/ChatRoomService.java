@@ -1,5 +1,6 @@
 package com.ssu.network.chat.socket.service;
 
+import com.ssu.network.chat.api.controller.chat.dtos.EnterResponseDto;
 import com.ssu.network.chat.socket.dao.ChannelTopicRepository;
 import com.ssu.network.chat.socket.dao.ChatRoomRepository;
 import com.ssu.network.chat.socket.exception.TopicNotExistException;
@@ -26,13 +27,12 @@ public class ChatRoomService {
         return channelTopic;
     }
 
-    public void enterChatRoom(String roomId) {
+    public EnterResponseDto enterChatRoom(String roomId) {
         ChannelTopic channelTopic = channelTopicRepository.findTopicByRoomId(roomId);
         if (channelTopic == null) {
             channelTopic = channelTopicRepository.save(roomId);
             redisMessageListener.addMessageListener(redisSubscriber, channelTopic);
         }
-
-
+        return new EnterResponseDto(roomId);
     }
 }

@@ -24,9 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .headers()
+                .frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
@@ -38,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**")
                 .permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/chat/**", "/ws-stomp").hasAnyRole("USER")
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
