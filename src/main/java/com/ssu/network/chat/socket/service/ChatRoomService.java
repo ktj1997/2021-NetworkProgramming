@@ -1,38 +1,32 @@
 package com.ssu.network.chat.socket.service;
 
-import com.ssu.network.chat.api.controller.chat.dtos.EnterResponseDto;
-import com.ssu.network.chat.socket.dao.ChannelTopicRepository;
+import com.ssu.network.chat.api.controller.room.dtos.EnterResponseDto;
 import com.ssu.network.chat.socket.dao.ChatRoomRepository;
-import com.ssu.network.chat.socket.exception.TopicNotExistException;
 import com.ssu.network.chat.socket.handler.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
-    private final ChannelTopicRepository channelTopicRepository;
-    private final RedisMessageListenerContainer redisMessageListener;
-    private final RedisSubscriber redisSubscriber;
 
-
-    public ChannelTopic getChannelTopic(String roomId) {
-        ChannelTopic channelTopic = channelTopicRepository.findTopicByRoomId(roomId);
-        if (channelTopic == null)
-            throw new TopicNotExistException();
-        return channelTopic;
+    @PostConstruct
+    public void init() {
+        enterChatRoom("2");
     }
 
     public EnterResponseDto enterChatRoom(String roomId) {
-        ChannelTopic channelTopic = channelTopicRepository.findTopicByRoomId(roomId);
-        if (channelTopic == null) {
-            channelTopic = channelTopicRepository.save(roomId);
-            redisMessageListener.addMessageListener(redisSubscriber, channelTopic);
-        }
+        chatRoomRepository.enterChatRoom(roomId);
         return new EnterResponseDto(roomId);
+    }
+
+    public ChannelTopic getChannelTopic(String roomId){
+        return chatRoomRepository.getTopic(roomId);
     }
 }

@@ -1,4 +1,4 @@
-package com.ssu.network.chat.api.controller.chat.dtos;
+package com.ssu.network.chat.api.controller.room.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

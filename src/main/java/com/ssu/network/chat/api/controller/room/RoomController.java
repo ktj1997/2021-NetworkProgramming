@@ -1,13 +1,13 @@
-package com.ssu.network.chat.api.controller.chat;
+package com.ssu.network.chat.api.controller.room;
 
-import com.ssu.network.chat.api.controller.chat.dtos.EnterResponseDto;
+import com.ssu.network.chat.api.controller.room.dtos.EnterResponseDto;
 import com.ssu.network.chat.socket.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/room")
 public class RoomController {
 
     private final ChatRoomService chatRoomService;

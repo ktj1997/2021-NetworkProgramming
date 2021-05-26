@@ -12,7 +12,9 @@ public enum ExceptionCode {
 
     EXPIRE_TOKEN("AUTH-003", "Token is Expired"),
 
-    NOT_BEARER_FORMAT("AUTH-004", "Token Must Stared With Bearer ");
+    NOT_BEARER_FORMAT("AUTH-004", "Token Must Stared With Bearer "),
+
+    AUTHORIZATION_HEADER_MISSING("AUTH-005", "Can't find Authorization header");
 
     private final String code;
     private final String message;

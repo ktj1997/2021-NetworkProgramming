@@ -38,8 +38,8 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword()))
             throw new InvalidSignInException();
 
-        String accessToken = jwtProvider.generateAccessToken(user.getId(), user.getUserRole());
-        String refreshToken = jwtProvider.generateRefreshToken(user.getId(), user.getUserRole());
+        String accessToken = jwtProvider.generateAccessToken(user.getId(), user.getUserName(), user.getUserRole());
+        String refreshToken = jwtProvider.generateRefreshToken(user.getId(), user.getUserName(), user.getUserRole());
         user.setRefreshToken(refreshToken);
         return new SignInResponseDto(accessToken, refreshToken);
     }

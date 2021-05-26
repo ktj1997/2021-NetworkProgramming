@@ -8,8 +8,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessage {
     private ChatType messageType;
-    private String sender;
     private String roomId;
+
+    @Setter
+    private String sender;
     @Setter
     private String message;
 }
