@@ -4,6 +4,7 @@ import com.ssu.network.chat.api.model.common.TimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,6 +42,7 @@ public class User extends TimeEntity {
     @Enumerated(EnumType.STRING)
     UserRole userRole;
 
+    @Setter
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
     UserStatus status;

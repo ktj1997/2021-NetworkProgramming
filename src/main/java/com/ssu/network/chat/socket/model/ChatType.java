@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ChatType {
-    ENTER, CONNECT, MESSAGE, EXIT
+    ENTER, CONNECT, DISCONNECT, MESSAGE, EXIT
 }
