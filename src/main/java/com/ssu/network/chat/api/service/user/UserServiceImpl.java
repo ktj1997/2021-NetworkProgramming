@@ -7,6 +7,7 @@ import com.ssu.network.chat.api.dao.user.UserRepository;
 import com.ssu.network.chat.api.model.user.Interest;
 import com.ssu.network.chat.api.model.user.User;
 import com.ssu.network.chat.api.model.user.UserInterest;
+import com.ssu.network.chat.api.model.user.UserStatus;
 import com.ssu.network.chat.api.service.user.exception.UserNotExistException;
 import com.ssu.network.chat.core.util.SecurityUtil;
 import com.ssu.network.chat.socket.dao.ChatRepository;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,13 +45,17 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getOnlineUser() {
         User user = userRepository.findById(SecurityUtil.getUserIdFromToken()).orElseThrow(UserNotExistException::new);
         Set<String> onlineUserName = chatRepository.getOnlineUserList();
+        List<Interest> interests = user.getInterests().stream().map(UserInterest::getInterest).collect(Collectors.toList());
         List<User> onlineUser = onlineUserName.stream().map(userRepository::findByUserName)
                 .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
 
         return onlineUser.stream()
+                .filter(filterOnlineUser -> filterOnlineUser.getInterests().stream().anyMatch(
+                        filterOnlineUserInterest -> interests.contains(filterOnlineUserInterest.getInterest())
+                )).filter(similarInterestUser -> similarInterestUser.getStatus() == UserStatus.ONLINE)
                 .map(online ->
                         new UserDto(online.getName(), online.getGender(),
-                                new InterestDto(userInterestRepository.findAllByUser(user)
+                                new InterestDto(online.getInterests()
                                         .stream().map(UserInterest::getInterest).collect(Collectors.toList()))))
                 .collect(Collectors.toList());
 

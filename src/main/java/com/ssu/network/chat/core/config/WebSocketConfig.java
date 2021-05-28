@@ -31,7 +31,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
@@ -54,10 +54,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         token = jwtProvider.checkingAndParsingBearer(token);
                         Claims claims = jwtProvider.getClaimsFromToken(token);
                         String userName = jwtProvider.getUserNameFromClaims(claims);
-                        if (StompCommand.CONNECT == accessor.getCommand()) // websocket 연결요청
+                        if (StompCommand.CONNECT == accessor.getCommand()){
                             chatRepository.setOnlineUser(userName);
-                        else if (StompCommand.DISCONNECT == accessor.getCommand())
+                            chatRepository.enterChatRoom(userName);
+                        }
+                        else if (StompCommand.DISCONNECT == accessor.getCommand()){
                             chatRepository.deleteOnlineUser(userName);
+                            chatRepository.deleteChatRoom(userName);
+                        }
                         return message;
                     } else
                         throw new NotLoginException();

@@ -8,9 +8,9 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.nio.channels.Channel;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,6 +51,9 @@ public class ChatRepository {
             topic = new ChannelTopic(roomId);
         topics.put(roomId, topic);
         return topic;
+    }
+    public void deleteChatRoom(String roomId){
+        topics.remove(roomId);
     }
 
     public ChatRoom findChatRoomById(String roomId) {

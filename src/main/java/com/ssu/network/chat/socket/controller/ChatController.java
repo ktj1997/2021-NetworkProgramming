@@ -1,7 +1,5 @@
 package com.ssu.network.chat.socket.controller;
 
-import com.ssu.network.chat.core.security.JwtProvider;
-import com.ssu.network.chat.socket.handler.RedisPublisher;
 import com.ssu.network.chat.socket.model.ChatMessage;
 import com.ssu.network.chat.socket.model.ChatType;
 import com.ssu.network.chat.socket.service.ChatService;
