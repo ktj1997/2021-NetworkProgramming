@@ -11,6 +11,7 @@ import com.ssu.network.chat.socket.handler.RedisPublisher;
 import com.ssu.network.chat.socket.model.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,9 +52,13 @@ public class ChatService {
     }
 
     public void setOnlineUser(String userName) {
+        User user = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
+        user.setStatus(UserStatus.ONLINE);
         chatRepository.setOnlineUser(userName);
     }
     public void setOfflineUser(String userName) {
+        User user = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
+        user.setStatus(UserStatus.OFFLINE);
         chatRepository.deleteOnlineUser(userName);
     }
 }

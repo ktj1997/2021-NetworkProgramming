@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(SecurityUtil.getUserIdFromToken())
                 .orElseThrow(UserNotExistException::new);
         List<UserInterest> newUserInterests = dto.getInterests().stream()
-                .map(interest -> new UserInterest(null, user, interest)).collect(Collectors.toList());
+                .map(interest -> new UserInterest(null, user, Interest.valueOf(interest))).collect(Collectors.toList());
         userInterestRepository.deleteAllByUser(user);
         userInterestRepository.saveAll(newUserInterests);
 
@@ -44,9 +44,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getOnlineUser() {
         User user = userRepository.findById(SecurityUtil.getUserIdFromToken()).orElseThrow(UserNotExistException::new);
+        System.out.println(user.getUserName());
         Set<String> onlineUserName = chatRepository.getOnlineUserList();
         List<Interest> interests = user.getInterests().stream().map(UserInterest::getInterest).collect(Collectors.toList());
-        List<User> onlineUser = onlineUserName.stream().map(userRepository::findByUserName)
+        List<User> onlineUser = onlineUserName.stream().filter(it -> !it.equals(user.getUserName())).map(userRepository::findByUserName)
                 .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
 
         return onlineUser.stream()
@@ -54,9 +55,9 @@ public class UserServiceImpl implements UserService {
                         filterOnlineUserInterest -> interests.contains(filterOnlineUserInterest.getInterest())
                 )).filter(similarInterestUser -> similarInterestUser.getStatus() == UserStatus.ONLINE)
                 .map(online ->
-                        new UserDto(online.getName(), online.getGender(),
+                        new UserDto(online.getUserName(), online.getGender(),
                                 new InterestDto(online.getInterests()
-                                        .stream().map(UserInterest::getInterest).collect(Collectors.toList()))))
+                                        .stream().map(interest -> interest.getInterest().toString()).collect(Collectors.toList()))))
                 .collect(Collectors.toList());
 
     }

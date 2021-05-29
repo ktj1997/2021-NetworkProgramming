@@ -4,7 +4,6 @@ import com.ssu.network.chat.api.model.common.TimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +32,7 @@ public class User extends TimeEntity {
     private Gender gender;
 
     /**
-     * 1997-12-26
+     * YYYY-MM-dd
      */
     @Column(nullable = false, length = 10)
     private String birth;

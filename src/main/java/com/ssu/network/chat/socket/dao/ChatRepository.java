@@ -37,6 +37,5 @@ public class ChatRepository {
 
     public Set<String> getOnlineUserList() {
         return onlineUser;
-
     }
 }
