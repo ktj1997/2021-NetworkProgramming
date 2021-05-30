@@ -11,7 +11,6 @@ import com.ssu.network.chat.socket.handler.RedisPublisher;
 import com.ssu.network.chat.socket.model.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +37,8 @@ public class ChatService {
         if (roomOwner.getStatus() == UserStatus.ONLINE) {
             roomOwner.setStatus(UserStatus.CHAT);
             participant.setStatus(UserStatus.CHAT);
-            chatRepository.participate(userName);
+            if(chatRepository.canParticipate(roomId))
+                chatRepository.participate(roomId);
             return new EnterResponseDto(roomId);
         } else
             throw new AlreadyChatException();
@@ -48,7 +48,7 @@ public class ChatService {
         User roomOwner = userRepository.findByUserName(roomId).orElseThrow(UserNotExistException::new);
         User participant = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
 
-        chatRepository.exit(userName);
+        chatRepository.exit(roomId);
         roomOwner.setStatus(UserStatus.ONLINE);
         participant.setStatus(UserStatus.ONLINE);
     }
@@ -59,6 +59,7 @@ public class ChatService {
         chatRepository.participate(userName);
         chatRepository.setOnlineUser(userName);
     }
+
     public void setOfflineUser(String userName) {
         User user = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
         user.setStatus(UserStatus.OFFLINE);

@@ -28,8 +28,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
                 .withSockJS();
     }
-
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/sub");

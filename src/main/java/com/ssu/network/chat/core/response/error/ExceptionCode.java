@@ -14,7 +14,9 @@ public enum ExceptionCode {
 
     NOT_BEARER_FORMAT("AUTH-004", "Token Must Stared With Bearer "),
 
-    AUTHORIZATION_HEADER_MISSING("AUTH-005", "Can't find Authorization header");
+    AUTHORIZATION_HEADER_MISSING("AUTH-005", "Can't find Authorization header"),
+
+    USER_ALREADY_CHAT("CHAT-001","User Already Participate Another Chat");
 
     private final String code;
     private final String message;

@@ -34,7 +34,14 @@ public class ChatRepository {
     }
 
     public boolean canParticipate(String roomId) {
-        return !chatParticipant.containsKey(roomId) ||  chatParticipant.get(roomId) < 2;
+        System.out.println(roomId);
+        if(chatParticipant.containsKey(roomId))
+            System.out.println(chatParticipant.get(roomId));
+        else
+            System.out.println("no");
+
+        System.out.println(!chatParticipant.containsKey(roomId) ||  chatParticipant.get(roomId) < 2);
+        return (!chatParticipant.containsKey(roomId) ||  chatParticipant.get(roomId) < 2);
     }
 
     public void deleteOnlineUser(String userName) {
