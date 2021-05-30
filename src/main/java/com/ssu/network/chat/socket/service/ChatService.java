@@ -38,6 +38,7 @@ public class ChatService {
         if (roomOwner.getStatus() == UserStatus.ONLINE) {
             roomOwner.setStatus(UserStatus.CHAT);
             participant.setStatus(UserStatus.CHAT);
+            chatRepository.participate(userName);
             return new EnterResponseDto(roomId);
         } else
             throw new AlreadyChatException();
@@ -47,6 +48,7 @@ public class ChatService {
         User roomOwner = userRepository.findByUserName(roomId).orElseThrow(UserNotExistException::new);
         User participant = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
 
+        chatRepository.exit(userName);
         roomOwner.setStatus(UserStatus.ONLINE);
         participant.setStatus(UserStatus.ONLINE);
     }
@@ -54,6 +56,7 @@ public class ChatService {
     public void setOnlineUser(String userName) {
         User user = userRepository.findByUserName(userName).orElseThrow(UserNotExistException::new);
         user.setStatus(UserStatus.ONLINE);
+        chatRepository.participate(userName);
         chatRepository.setOnlineUser(userName);
     }
     public void setOfflineUser(String userName) {

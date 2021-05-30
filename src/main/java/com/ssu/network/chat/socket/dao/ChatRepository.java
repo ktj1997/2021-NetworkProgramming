@@ -1,19 +1,12 @@
 package com.ssu.network.chat.socket.dao;
 
-import com.ssu.network.chat.socket.handler.RedisSubscriber;
-import com.ssu.network.chat.socket.model.ChatRoom;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.nio.channels.Channel;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,10 +14,27 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class ChatRepository {
     private Set<String> onlineUser;
+    private Map<String, Integer> chatParticipant;
 
     @PostConstruct
     private void init() {
         onlineUser = Collections.synchronizedSet(new HashSet<>());
+        chatParticipant = new ConcurrentHashMap<>();
+    }
+
+    public void participate(String roomId) {
+        if (!chatParticipant.containsKey(roomId))
+            chatParticipant.put(roomId, 1);
+        else
+            chatParticipant.put(roomId, 2);
+    }
+
+    public void exit(String roomId) {
+        chatParticipant.put(roomId, 1);
+    }
+
+    public boolean canParticipate(String roomId) {
+        return !chatParticipant.containsKey(roomId) ||  chatParticipant.get(roomId) < 2;
     }
 
     public void deleteOnlineUser(String userName) {

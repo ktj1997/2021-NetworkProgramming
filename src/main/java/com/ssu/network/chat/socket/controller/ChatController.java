@@ -26,17 +26,15 @@ public class ChatController {
             String userName = jwtProvider.getUserNameFromClaims(claims);
             if (message.getMessageType() == ChatType.ENTER)
                 chatService.setOnlineUser(userName);
-            else if (message.getMessageType() == ChatType.CONNECT){
+            else if (message.getMessageType() == ChatType.CONNECT) {
                 chatService.enterChatRoom(userName, message.getRoomId());
                 message.setMessage("입장");
-            }
-            else if (message.getMessageType() == ChatType.DISCONNECT){
+            } else if (message.getMessageType() == ChatType.DISCONNECT) {
                 chatService.exitChatRoom(userName, message.getRoomId());
                 message.setMessage("퇴장");
-            }
-            else if (message.getMessageType() == ChatType.EXIT)
+            } else if (message.getMessageType() == ChatType.EXIT)
                 chatService.setOfflineUser(userName);
-            message.setSender(userName );
+            message.setSender(userName);
             chatService.sendMessage(message);
         } else
             throw new NotLoginException();
