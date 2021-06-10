@@ -16,7 +16,11 @@ public enum ExceptionCode {
 
     AUTHORIZATION_HEADER_MISSING("AUTH-005", "Can't find Authorization header"),
 
-    USER_ALREADY_CHAT("CHAT-001","User Already Participate Another Chat");
+    INVALID_LOGIN("AUTH-005", "ID or Password is InCorrect"),
+
+    USER_NOT_EXIST("USER-001", "User is Not Exist"),
+
+    USER_ALREADY_CHAT("CHAT-001", "User Already Participate Another Chat");
 
     private final String code;
     private final String message;
