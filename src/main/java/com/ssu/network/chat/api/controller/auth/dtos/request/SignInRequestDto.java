@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @AllArgsConstructor
 public class SignInRequestDto {
-
     @NotEmpty
     private String userName;
 

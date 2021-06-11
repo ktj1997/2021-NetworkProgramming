@@ -1,6 +1,6 @@
 package com.ssu.network.chat.socket.service;
 
-import com.ssu.network.chat.api.controller.room.dtos.EnterResponseDto;
+import com.ssu.network.chat.socket.controller.dtos.EnterResponseDto;
 import com.ssu.network.chat.api.dao.user.UserRepository;
 import com.ssu.network.chat.api.model.user.User;
 import com.ssu.network.chat.api.model.user.UserStatus;

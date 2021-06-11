@@ -21,6 +21,11 @@ public class UserController {
         return userService.chooseInterest(dto);
     }
 
+    @GetMapping("/interest")
+    public InterestDto getInterest(){
+        return userService.getInterest();
+    }
+
 
     @GetMapping("/participant")
     public List<UserDto> getOnlineUser(){

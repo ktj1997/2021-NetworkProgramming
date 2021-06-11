@@ -6,7 +6,6 @@ import com.ssu.network.chat.api.model.user.UserRole;
 import com.ssu.network.chat.api.model.user.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -27,10 +26,9 @@ public class SignUpRequestDto {
     @NotEmpty
     private String gender;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String birth;
+    private int age;
 
     public User toEntity() {
-        return new User(null,userName, password, name, Gender.valueOf(gender), birth, UserRole.ROLE_USER, UserStatus.ONLINE,null,new ArrayList<>());
+        return new User(null, userName, password, name, Gender.valueOf(gender), age, UserRole.ROLE_USER, UserStatus.ONLINE, null, new ArrayList<>());
     }
 }

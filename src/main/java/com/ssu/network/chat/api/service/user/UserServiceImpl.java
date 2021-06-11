@@ -56,9 +56,16 @@ public class UserServiceImpl implements UserService {
                 )).filter(similarInterestUser -> similarInterestUser.getStatus() == UserStatus.ONLINE)
                 .map(online ->
                         new UserDto(online.getUserName(), online.getGender(),
+                                user.getAge(),
                                 new InterestDto(online.getInterests()
                                         .stream().map(interest -> interest.getInterest().toString()).collect(Collectors.toList()))))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public InterestDto getInterest() {
+        User user = userRepository.findById(SecurityUtil.getUserIdFromToken()).orElseThrow(UserNotExistException::new);
+        return new InterestDto(userInterestRepository.findAllByUser(user).stream().map(Object::toString).collect(Collectors.toList()));
     }
 }

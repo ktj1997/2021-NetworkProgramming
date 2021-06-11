@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserService {
     boolean chooseInterest(InterestDto dto);
     List<UserDto> getOnlineUser();
+    InterestDto getInterest();
 }

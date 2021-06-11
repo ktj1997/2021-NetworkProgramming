@@ -34,8 +34,8 @@ public class User extends TimeEntity {
     /**
      * YYYY-MM-dd
      */
-    @Column(nullable = false, length = 10)
-    private String birth;
+    @Column(nullable = false)
+    private int age;
 
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
