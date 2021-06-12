@@ -25,7 +25,7 @@ public class User extends TimeEntity {
     private String password;
 
     @Column(nullable = false, length = 10)
-    private String name;
+    private String nickName;
 
     @Column(nullable = false, length = 1)
     @Enumerated(EnumType.STRING)

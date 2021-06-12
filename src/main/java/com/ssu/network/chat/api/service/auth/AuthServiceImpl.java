@@ -49,4 +49,9 @@ public class AuthServiceImpl implements AuthService {
         return !userRepository.existsByUserName(id);
     }
 
+    @Override
+    public boolean checkNickNameDuplication(String nickname) {
+        return !userRepository.existsByNickName(nickname);
+    }
+
 }

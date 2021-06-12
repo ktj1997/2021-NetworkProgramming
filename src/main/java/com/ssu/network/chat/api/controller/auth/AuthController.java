@@ -28,7 +28,12 @@ public class AuthController {
     }
 
     @GetMapping("/check")
-    public boolean checkIdDuplication(@RequestParam String id) {
-        return authService.checkIdDuplication(id);
+    public boolean checkIdDuplication(@RequestParam(required = false) String id, @RequestParam(required = false) String nickname) {
+        if (id != null)
+            return authService.checkIdDuplication(id);
+        else
+            return authService.checkNickNameDuplication(nickname);
+
     }
+
 }

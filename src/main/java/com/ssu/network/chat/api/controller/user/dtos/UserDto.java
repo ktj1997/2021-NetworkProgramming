@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserDto {
-    private String userName;
+    private String nickName;
     private Gender gender;
     private int age;
     private InterestDto interests;

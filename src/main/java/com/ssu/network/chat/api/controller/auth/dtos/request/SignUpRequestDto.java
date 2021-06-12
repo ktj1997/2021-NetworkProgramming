@@ -21,7 +21,7 @@ public class SignUpRequestDto {
     private String password;
 
     @NotEmpty
-    private String name;
+    private String nickName;
 
     @NotEmpty
     private String gender;
@@ -29,6 +29,6 @@ public class SignUpRequestDto {
     private int age;
 
     public User toEntity() {
-        return new User(null, userName, password, name, Gender.valueOf(gender), age, UserRole.ROLE_USER, UserStatus.ONLINE, null, new ArrayList<>());
+        return new User(null, userName, password, nickName, Gender.valueOf(gender), age, UserRole.ROLE_USER, UserStatus.ONLINE, null, new ArrayList<>());
     }
 }

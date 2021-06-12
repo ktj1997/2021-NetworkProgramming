@@ -10,4 +10,6 @@ public interface AuthService {
     SignInResponseDto signIn(SignInRequestDto dto);
 
     boolean checkIdDuplication(String id);
+
+    boolean checkNickNameDuplication(String nickname);
 }
