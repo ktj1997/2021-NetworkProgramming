@@ -66,6 +66,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public InterestDto getInterest() {
         User user = userRepository.findById(SecurityUtil.getUserIdFromToken()).orElseThrow(UserNotExistException::new);
-        return new InterestDto(userInterestRepository.findAllByUser(user).stream().map(Object::toString).collect(Collectors.toList()));
+        return new InterestDto(userInterestRepository.findAllByUser(user).stream().map(it -> it.getInterest().toString()).collect(Collectors.toList()));
     }
 }
